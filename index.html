@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>spanpriority</title>
+<style>body{font-family:system-ui,sans-serif;margin:24px;max-width:960px}
+textarea{width:100%;height:150px;font-family:ui-monospace,monospace}
+button{padding:6px 12px;margin:8px 8px 8px 0}pre{background:#f6f6f6;padding:10px;border-radius:6px;overflow:auto}
+.ok{color:#0a7}.bad{color:#c00}</style>
+</head>
+<body>
+<h1>spanpriority 工作台</h1>
+<p>改样例里的区间、优先级与预算再点运行，结果给胜出的区间、被覆盖的区间与重叠对数。</p>
+<textarea id="input">{
+  "bad_span_code": "E_BAD_SPAN",
+  "budget": 3,
+  "spans": [
+    {"id": "s0", "start": 0, "end": 10, "priority": 1},
+    {"id": "s1", "start": 2, "end": 4, "priority": 3},
+    {"id": "s2", "start": 3, "end": 5, "priority": 2},
+    {"id": "s3", "start": 8, "end": 12, "priority": 2},
+    {"id": "s4", "start": 9, "end": 11, "priority": 5}
+  ]
+}</textarea>
+<div><button id="run">运行</button><span id="status" class="ok">等待</span></div>
+<pre id="out">还没跑</pre>
+<script type="module">
+import { render } from "./app.js";
+
+document.getElementById("run").addEventListener("click", function () {
+  const status = document.getElementById("status");
+  try {
+    const spec = JSON.parse(document.getElementById("input").value);
+    const result = render(spec);
+    status.className = "ok";
+    status.textContent = "完成";
+    document.getElementById("out").textContent = JSON.stringify(result, null, 1);
+  } catch (error) {
+    status.className = "bad";
+    status.textContent = "出错 " + error.message;
+    document.getElementById("out").textContent = String(error && error.stack ? error.stack : error);
+  }
+});
+</script>
+</body>
+</html>
