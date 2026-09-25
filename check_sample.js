@@ -51,6 +51,7 @@ const EXPECTED = {
   ],
   "预算消耗": 3,
   "绘制预算": 3
+  ,"区间顺序错误的错误码": "E_BAD_SPAN"
 };
 // 有的值在收进来之前已经 stringify 过，比较前先试着解析回来，避免类型错配把正确实现判成不过。
 function __same(got, want) {
